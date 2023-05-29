@@ -1,13 +1,12 @@
 #include "SevSeg.h"
-//GPS Includes
 #include <TinyGPS++.h>
 
 SevSeg sevseg; 
 String prevText;
+bool gpsLoaded;
 
 //GPS
 static const uint32_t GPSBaud = 9600;
-// The TinyGPS++ object
 TinyGPSPlus gps;
 
 //Timer
@@ -30,6 +29,7 @@ void setup(){
   //Loading animation
   sevseg.setChars("GPS");
   prevText = "GPS";
+  gpsLoaded = false;
 
   //Serial communication
   Serial.begin(GPSBaud);
@@ -37,44 +37,40 @@ void setup(){
 
 void loop(){
   //Loading screen animation
-  //FIGURE OUT HOW TO NOT RUN THIS ONCE WE HAVE SAT CONNECTION
-  // unsigned long currentMillis = millis();
-  // if (currentMillis - previousMillis >= interval) {
-  //   // save the last time you blinked the LED
-  //   previousMillis = currentMillis;
+  if(gpsLoaded == false && Serial.available() == 0){
+    
+    unsigned long currentMillis = millis();
+    if (currentMillis - previousMillis >= interval) {
+      // save the last time you blinked the LED
+      previousMillis = currentMillis;
 
-  //   if(prevText == "GPS."){
-  //     sevseg.setChars("GPS..");
-  //     prevText = "GPS..";
-  //   } else if(prevText == "GPS.."){
-  //     sevseg.setChars("GPS");
-  //     prevText = "GPS";
-  //   } else {
-  //     sevseg.setChars("GPS.");
-  //     prevText = "GPS.";
-  //   }
-  // }
-
+      if(prevText == "GPS."){
+        sevseg.setChars("GPS..");
+        prevText = "GPS..";
+      } else if(prevText == "GPS.."){
+        sevseg.setChars("GPS");
+        prevText = "GPS";
+      } else {
+        sevseg.setChars("GPS.");
+        prevText = "GPS.";
+      }
+    }
+  }
+  
+  //GPS Speedometer
   while (Serial.available() > 0){ // if there are bytes availble to be read from the serial port, start processing them.
+    if (!gpsLoaded) gpsLoaded = true;
     gps.encode(Serial.read());
-    // if (gps.location.isUpdated()){
-    //   Serial.print("Latitude= "); 
-    //   Serial.print(gps.location.lat(), 6);
-    //   Serial.print(" Longitude= "); 
-    //   Serial.println(gps.location.lng(), 6);
-    //   writeToLCD("Lat: " + String(gps.location.lat(), 6), "Long: " + String(gps.location.lng(), 6));
-    // }
 
     if(gps.speed.isUpdated()){
+      // Serial printing for troubleshooting
       Serial.print("Speed = "); 
       Serial.print(gps.speed.kmph(), 2);
       Serial.println(" km/h\n");
       sevseg.setNumberF(gps.speed.kmph());
     }
-    
   }
 
-  
   //Needs to run every loop to keep display updated.
   sevseg.refreshDisplay(); 
 }
