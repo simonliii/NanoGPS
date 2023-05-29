@@ -1,18 +1,14 @@
 #include "SevSeg.h"
 //GPS Includes
 #include <TinyGPS++.h>
-#include <SoftwareSerial.h>
 
 SevSeg sevseg; 
 String prevText;
 
 //GPS
-static const int RXPin = 15, TXPin = 16;
 static const uint32_t GPSBaud = 9600;
 // The TinyGPS++ object
 TinyGPSPlus gps;
-// The serial connection to the GPS device
-SoftwareSerial ss(RXPin, TXPin);
 
 //Timer
 // Generally, you should use "unsigned long" for variables that hold time
@@ -36,8 +32,7 @@ void setup(){
   prevText = "GPS";
 
   //Serial communication
-  Serial.begin(9600);
-  ss.begin(GPSBaud);
+  Serial.begin(GPSBaud);
 }
 
 void loop(){
@@ -60,8 +55,8 @@ void loop(){
   //   }
   // }
 
-  while (ss.available() > 0){ // if there are bytes availble to be read from the serial port, start processing them.
-    gps.encode(ss.read());
+  while (Serial.available() > 0){ // if there are bytes availble to be read from the serial port, start processing them.
+    gps.encode(Serial.read());
     // if (gps.location.isUpdated()){
     //   Serial.print("Latitude= "); 
     //   Serial.print(gps.location.lat(), 6);
@@ -74,13 +69,12 @@ void loop(){
       Serial.print("Speed = "); 
       Serial.print(gps.speed.kmph(), 2);
       Serial.println(" km/h\n");
-      //sevseg.setNumberF(gps.speed.kmph());
+      sevseg.setNumberF(gps.speed.kmph());
     }
     
   }
 
   
-  sevseg.setNumber(8888);
   //Needs to run every loop to keep display updated.
   sevseg.refreshDisplay(); 
 }
