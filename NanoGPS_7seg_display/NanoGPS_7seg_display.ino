@@ -72,9 +72,9 @@ void loop(){
 
     if(gps.speed.isUpdated()){
       Serial.print("Speed = "); 
-      //Serial.print(gps.speed.kmph(), 2);
-      Serial.println(" km/h" + '\n');
-      //sevseg.setNumberF(gps.speed.kmph());
+      Serial.print(gps.speed.kmph(), 2);
+      Serial.println(" km/h\n");
+      sevseg.setNumberF(gps.speed.kmph(), 1);
     }
   }
 
