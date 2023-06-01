@@ -1,76 +1,91 @@
+#include "SevSeg.h"
 #include <TinyGPS++.h>
-#include <SoftwareSerial.h>
-//LCD
-#include <LiquidCrystal.h>
 
-static const int RXPin = 7, TXPin = 8;
+//7 Segment Display object
+SevSeg sevseg; 
+
+//Loading animation variables
+String prevText;
+bool gpsLoaded;
+
+//GPS
 static const uint32_t GPSBaud = 9600;
-
-// The TinyGPS++ object
 TinyGPSPlus gps;
 
-// The serial connection to the GPS device
-SoftwareSerial ss(RXPin, TXPin);
-
-//Pins for LCD
-const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
-String prevLine1;
-String prevLine2;
-int topkmh;
+//Timers
+unsigned long previousMillis = 0;  // will store last time timer loop was active.
+const long interval = 700;  // timer interval for loading animation.
+const long connectionLossInterval = 3000; // timer interval for when connection is lost.
 
 void setup(){
-  analogWrite(9, 10); // Generate PWM signal at pin D9, value of 10 (out of 255)
-  lcd.begin(16,2);
-  lcd.print("Connecting GPS...");
-  Serial.begin(9600);
-  ss.begin(GPSBaud);
+  //7 Segment Display settings
+  byte numDigits = 4;
+  byte digitPins[] = {10, 11, 12, 13};
+  byte segmentPins[] = {9, 2, 3, 5, 6, 8, 7, 4};
+  bool resistorsOnSegments = true; 
+  bool updateWithDelaysIn = true;
+  byte hardwareConfig = COMMON_CATHODE; 
+  sevseg.begin(hardwareConfig, numDigits, digitPins, segmentPins, resistorsOnSegments);
+  sevseg.setBrightness(90);
 
-  prevLine1 = "Connecting GPS...";
-  prevLine2 = " ";
-  topkmh = 0;
+  //Prepare Loading animation
+  sevseg.setChars("GPS");
+  prevText = "GPS";
+  gpsLoaded = false;
+
+  //Serial communication
+  Serial.begin(GPSBaud);
 }
 
 void loop(){
-  // This sketch displays information every time a new sentence is correctly encoded.
-  while (ss.available() > 0){ // if there are bytes availble to be read from the serial port, start processing them.
-    gps.encode(ss.read());
-    // if (gps.location.isUpdated()){
-    //   Serial.print("Latitude= "); 
-    //   Serial.print(gps.location.lat(), 6);
-    //   Serial.print(" Longitude= "); 
-    //   Serial.println(gps.location.lng(), 6);
-    //   writeToLCD("Lat: " + String(gps.location.lat(), 6), "Long: " + String(gps.location.lng(), 6));
-    // }
+  //Loading screen animation
+  if(gpsLoaded == false && Serial.available() == 0){
+    
+    unsigned long currentMillis = millis();
+    if (currentMillis - previousMillis >= interval) {
+      // save the last time you blinked the LED
+      previousMillis = currentMillis;
 
-    if(gps.speed.isUpdated)){
-      //updateTopSpeed(gps.speed.kmph());
-      Serial.print("Speed = "); 
-      Serial.print(gps.speed.kmph(), 2);
-      Serial.println(" km/h");
-      writeToLCD(String(gps.speed.kmph(), 1) + " km/h", "Top Speed: " + String(topkmh));
+      Serial.println("Searching for satellites...\n");
+
+      if(prevText == "GPS."){
+        sevseg.setChars("GPS..");
+        prevText = "GPS..";
+      } else if(prevText == "GPS.."){
+        sevseg.setChars("GPS");
+        prevText = "GPS";
+      } else {
+        sevseg.setChars("GPS.");
+        prevText = "GPS.";
+      }
+    }
+  } else if(Serial.available() == 0){ // Timer to restart loading animation on display if we lose connection for 3 seconds or more.
+    unsigned long currentMillis = millis();
+
+    if (currentMillis - previousMillis >= connectionLossInterval) {
+      // save the last time you checked if any data was recieved.
+      previousMillis = currentMillis;
+      gpsLoaded = false;
     }
   }
-}
+  
+  //GPS Speedometer
+  while (Serial.available() > 0){ // if there are bytes availble to be read from the serial port, start processing them.
+    if (!gpsLoaded) gpsLoaded = true; // Disables to connecting animation once connection has been established.
+    
+    previousMillis = millis(); // Keeps time value updated for the connection loss timer.
 
-void updateTopSpeed(int kmh){
-  if(kmh > topkmh){
-    topkmh = kmh;
+    gps.encode(Serial.read());
+
+    if(gps.speed.isUpdated()){ // Print current speed to serial and display.
+      Serial.print("Speed = "); 
+      Serial.print(gps.speed.kmph(), 2);
+      Serial.println(" km/h\n");
+
+      sevseg.setNumberF(gps.speed.kmph());
+    }
   }
-}
 
-void writeToLCD(String line1, String line2){
-  if(prevLine1.length() > line1.length() || prevLine2.length() > line2.length()){
-    lcd.clear();
-  }
-
-  //if(line1 != prevLine1 && line2 != prevLine2){
-    lcd.setCursor(0, 0);
-    lcd.print(line1);
-    prevLine1 = line1;
-
-    lcd.setCursor(0, 1);
-    lcd.print(line2);
-    prevLine2 = line2;
-  //}
+  //Needs to run every loop to keep display updated.
+  sevseg.refreshDisplay(); 
 }
