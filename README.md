@@ -9,7 +9,7 @@ With this code, you can connect an Arduino Nano with a NEO-6M GPS Module to get 
 ## Hardware Required
 - Arduino Nano 
 - 7-Segment Display (Common-cathode)
-- 4x 1k Ohm Resitors
+- 8x 330 Ohm Resistors
 - NEO-6M GPS Module
 
 ## Wiring
@@ -27,25 +27,30 @@ This is how we will reference the pins when connecting them to the Arduino.
 ![Picture of the pinout on a 4x7-Segmented Display.](https://github.com/simonliii/NanoGPS/assets/18261239/567cfaec-05b5-45c7-86c9-c068eccd28fb)
 
 #### Resistors
-We will connect a 1K Ohm resistor to each of the digit pins (DP). These are as follows:
-- DP1 is pin 12.
-- DP2 is pin 9.
-- DP3 is pin 8.
-- DP4 is pin 6.
+We will connect a 330 Ohm resistor to each of the segment pins (SP). These are as follows:
+- Pin 1
+- Pin 2
+- Pin 3
+- Pin 4
+- Pin 5
+- Pin 7
+- Pin 10
+- Pin 11
+
 
 #### Wiring
 How to connect the Arduino pins to the display pins. We are only using the digital pins on the Arduino.
 
-- Arduino Pin 2 to Display Pin 7.
-- Arduino Pin 3 to Display Pin 4.
-- Arduino Pin 4 to Display Pin 3.
-- Arduino Pin 5 to Display Pin 2.
-- Arduino Pin 6 to Display Pin 1.
-- Arduino Pin 7 to Display Pin 5.
-- Arduino Pin 8 to Display Pin 10.
-- Arduino Pin 9 to Display Pin 11.
-- Arduino Pin 10 to Display Pin 12 (With 1k Ohm Resistor).
-- Arduino Pin 11 to Display Pin 9 &nbsp;&nbsp;(With 1k Ohm Resistor).
-- Arduino Pin 12 to Display Pin 8 &nbsp;&nbsp;(With 1k Ohm Resistor).
-- Arduino Pin 13 to Display Pin 6 &nbsp;&nbsp;(With 1k Ohm Resistor).
+- Arduino Pin 02 to Display Pin 07.
+- Arduino Pin 03 to Display Pin 04.
+- Arduino Pin 04 to Display Pin 03.
+- Arduino Pin 05 to Display Pin 02.
+- Arduino Pin 06 to Display Pin 01.
+- Arduino Pin 07 to Display Pin 05.
+- Arduino Pin 08 to Display Pin 10.
+- Arduino Pin 09 to Display Pin 11.
+- Arduino Pin 10 to Display Pin 12.
+- Arduino Pin 11 to Display Pin 09.
+- Arduino Pin 12 to Display Pin 08.
+- Arduino Pin 13 to Display Pin 06.
 
