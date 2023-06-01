@@ -7,5 +7,9 @@ With this code, you can connect an Arduino Nano with a NEO-6M GPS Module to get 
 - Since it uses hardware serial communication, we can utilize a cheap 7-segment display without the flickering that software serial would cause.
 
 ## Hardware Required
+- Arduino Nano 
+- 7-Segment Display (Common-cathode)
+- 4x 1k Ohm Resitors
+- NEO-6M GPS Module
 
 ## Wiring
