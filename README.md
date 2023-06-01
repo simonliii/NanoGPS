@@ -19,4 +19,8 @@ The GPS Module is connected to the Arduino Nano via four wires.
 - GND from the Arduino to GND on the module.
 - TX from the Arduino to RX on the module.
 - RX from the Arduino to TX on the module.
+### 7-Segment Display
+#### Pinout of 7-Segment Display
+This is how we will reference the pins when connecting them to the Arduino.
 
+![Picture of the pinout on a 4x7-segmented display.](https://github.com/simonliii/NanoGPS/assets/18261239/4ca3092e-9f21-44c4-9a4f-2ea03320729c)
