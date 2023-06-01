@@ -24,7 +24,8 @@ The GPS Module is connected to the Arduino Nano via four wires.
 This is how we will reference the pins when connecting them to the Arduino.
 
 
-![Picture of the pinout on a 4x7-Segmented Display.](https://github.com/simonliii/NanoGPS/assets/18261239/03463748-8713-46c4-8b11-6f7b9c949dad)
+![Picture of the pinout on a 4x7-Segmented Display.](https://github.com/simonliii/NanoGPS/assets/18261239/567cfaec-05b5-45c7-86c9-c068eccd28fb)
+
 #### Resistors
 We will connect a 1K Ohm resistor to each of the digit pins (DP). These are as follows:
 - DP1 is pin 12.
