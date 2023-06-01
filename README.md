@@ -27,7 +27,7 @@ This is how we will reference the pins when connecting them to the Arduino.
 ![Picture of the pinout on a 4x7-Segmented Display.](https://github.com/simonliii/NanoGPS/assets/18261239/567cfaec-05b5-45c7-86c9-c068eccd28fb)
 
 #### Resistors
-We will connect a 330 Ohm resistor to each of the segment pins (SP). These are as follows:
+We will connect a 330 Ohm resistor to each of the segment pins. These are as follows:
 - Pin 1
 - Pin 2
 - Pin 3
