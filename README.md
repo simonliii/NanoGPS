@@ -44,6 +44,7 @@ How to connect the Arduino pins to the display pins. We are only using the digit
 - Arduino Pin 8 to Display Pin 10.
 - Arduino Pin 9 to Display Pin 11.
 - Arduino Pin 10 to Display Pin 12 (With 1k Ohm Resistor).
-- Arduino Pin 11 to Display Pin 9  (With 1k Ohm Resistor).
-- Arduino Pin 12 to Display Pin 8  (With 1k Ohm Resistor).
-- Arduino Pin 13 to Display Pin 6  (With 1k Ohm Resistor).
+- Arduino Pin 11 to Display Pin 9 &nbsp;&nbsp;(With 1k Ohm Resistor).
+- Arduino Pin 12 to Display Pin 8 &nbsp;&nbsp;(With 1k Ohm Resistor).
+- Arduino Pin 13 to Display Pin 6 &nbsp;&nbsp;(With 1k Ohm Resistor).
+
