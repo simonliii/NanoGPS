@@ -33,7 +33,7 @@ We will connect a 1K Ohm resistor to each of the digit pins (DP). These are as f
 - DP4 is pin 6.
 
 #### Wiring
-How to connect the Arduino pins to the display pins.
+How to connect the Arduino pins to the display pins. We are only using the digital pins on the Arduino.
 
 - Arduino Pin 2 to Display Pin 7.
 - Arduino Pin 3 to Display Pin 4.
