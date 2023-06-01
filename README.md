@@ -13,3 +13,10 @@ With this code, you can connect an Arduino Nano with a NEO-6M GPS Module to get 
 - NEO-6M GPS Module
 
 ## Wiring
+### GPS Module
+The GPS Module is connected to the Arduino Nano via four wires. 
+5V from the Arduino to VCC on the module.
+GND from the Arduino to GND on the module.
+TX from the Arduino to RX on the module.
+RX from the Arduino to TX on the module.
+
